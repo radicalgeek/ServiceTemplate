@@ -7,6 +7,7 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Service.Data;
 
 namespace Service.Api
 {
@@ -26,8 +27,15 @@ namespace Service.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
+            var connection = Configuration["Production:SqliteConnectionString"];
+ 
+            services.AddEntityFramework()
+                    .AddSqlite()
+                    .AddDbContext<DataContext>(options => options.UseSqlite(connection));
+ 
             services.AddMvc();
+            services.AddScoped<IDataContextResporitory, DataContextResporitory>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

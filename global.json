@@ -1,0 +1,14 @@
+{
+    "sources": ["Service.Api", 
+                "Service.Data",
+                "Service.Host",
+                "Service.Logging",
+                "Service.Messaging",
+                "Service.Tests.Unit"],
+    "commands": {
+        "run": "Service.Host",
+        "ef": "EntityFramework.Commands",
+        "test": "xunit.runner.dnx",
+        "build": "dnu build"
+    }
+}
