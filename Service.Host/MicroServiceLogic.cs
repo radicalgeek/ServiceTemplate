@@ -1,19 +1,19 @@
 using System;
-using Service.Logging;
+//using Service.Logging;
+using Serilog;
 
 namespace Service.Host
 {
     public class MicroServiceLogic : IHostableMicroService
     {
-        private ILogger _logger;
-        public MicroServiceLogic(ILogger logger)
+        public MicroServiceLogic()
         {
-            _logger = logger;
+           
         }
         public void Run()
         {
             Console.WriteLine("Hello World");
-            _logger.Info("Info");
+            Log.Information("Info");
             Console.Read();
         }
     }

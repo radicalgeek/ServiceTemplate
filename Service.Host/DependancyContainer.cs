@@ -1,3 +1,4 @@
+using System;
 using Autofac;
 using Service.Logging;
 
@@ -8,7 +9,7 @@ namespace Service.Host
         public static IContainer Configure()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterType<Logger>().As<ILogger>();
+            //builder.RegisterInstance<ILogger>(Logger.GetLoggingService());
             builder.RegisterType<MicroServiceLogic>().As<IHostableMicroService>();
             return builder.Build();
         }
