@@ -1,7 +1,7 @@
 using System;
 using Serilog;
-using Prototype.Service.Data;
 using Service.Messaging.Filter;
+using Service.Messaging.Routing;
 
 namespace Service.Logic
 {
@@ -10,10 +10,10 @@ namespace Service.Logic
     /// </summary>
     public class MessageRouter : IMessageRouter
     {
-        private readonly IDataOperations _dataOperations;
+        private readonly IServiceOperations _dataOperations;
         private readonly IMessageFilter _filter;
 
-        public MessageRouter(IDataOperations dataOperations, IMessageFilter filter)
+        public MessageRouter(IServiceOperations dataOperations, IMessageFilter filter)
         {
             _dataOperations = dataOperations;
             _filter = filter;

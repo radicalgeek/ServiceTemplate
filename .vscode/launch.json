@@ -32,7 +32,7 @@
             // Type of configuration. Possible values: "node", "mono".
             "type": "mono",
             // Workspace relative or absolute path to the program.
-            "program": "Service.Host.exe",
+            "program": "./testOutput/bin/Debug/Service.Host.exe",
             // Automatically stop program after launch.
             "stopOnEntry": true,
             // Command line arguments passed to the program.

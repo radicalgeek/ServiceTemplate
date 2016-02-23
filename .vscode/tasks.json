@@ -12,7 +12,7 @@
     "command": "xbuild",
     "args": [
         // Ask msbuild to generate full paths for file names.
-        "/property:GenerateFullPaths=true;main=Service.Host"
+        "/Users/mark/Code/ServiceTemplate/src/Service.Host/Service.Host.csproj"//,"/property:GenerateFullPaths=true;main=Service.Host"
     ],
     "taskSelector": "/t:",
     "showOutput": "silent",

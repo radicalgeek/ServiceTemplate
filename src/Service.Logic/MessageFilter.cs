@@ -1,19 +1,20 @@
 using System;
 using Service.Messaging.Filter;
+using Microsoft.Extensions.PlatformAbstractions;
 using Serilog;
 
 namespace Service.Logic
 {
     public class MessageFilter : IMessageFilter
     {
-        private readonly IEnvironment _environment;
-        public MessageFilter(IEnvironment environment)
+        private readonly IApplicationEnvironment _app;
+        public MessageFilter(IApplicationEnvironment app)
         {
-            _environment = environment;
+            _app = app;
         }
         public bool ShouldTryProcessingMessage(dynamic message)
         {
-            var servicename = _environment.GetServiceName();
+            var servicename = _app.ApplicationName;
             
             if (!CheckMessageIfForThisService(message, servicename)) return false;
             if (!CheckForVersionCompatiblity(message, servicename)) return false;

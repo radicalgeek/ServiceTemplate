@@ -1,10 +1,5 @@
 {
-    "sources": ["Service.Api", 
-                "Service.Data",
-                "Service.Host",
-                "Service.Logging",
-                "Service.Messaging",
-                "Service.Tests.Unit"],
+    "sources": ["src","test"],
     "commands": {
         "run": "Service.Host",
         "ef": "EntityFramework.Commands",

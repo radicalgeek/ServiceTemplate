@@ -1,0 +1,30 @@
+servicetemplate:
+  build: .
+  links:
+   - sampledb
+   - queue
+  volumes_from:
+   - logging
+logging:
+  image: debian:wheezy
+  volumes:
+   - /var/log/ServiceTemplate:/var/log/ServiceTemplate
+sampledatastore:
+  image: debian:wheezy
+  volumes:
+   - /var/data/ServiceTemplate:/data/db
+sampledb:
+  image: postgres
+  volumes_from:
+   - sampledatastore
+queuedatastore:
+  image: debian:wheezy
+  volumes: 
+   - /var/queue:/var/lib/rabbitmq/mnesia
+queue:
+  image: rabbitmq:management
+  ports:
+   - "8080:15672"
+   - "5672:5672"
+  volumes_from:
+   - queuedatastore

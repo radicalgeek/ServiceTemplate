@@ -1,6 +1,5 @@
-using System;
 using Autofac;
-using Service.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Service.Host
 {
@@ -9,7 +8,8 @@ namespace Service.Host
         public static IContainer Configure()
         {
             var builder = new ContainerBuilder();
-            //builder.RegisterInstance<ILogger>(Logger.GetLoggingService());
+            builder.RegisterInstance<IRuntimeEnvironment>(PlatformServices.Default.Runtime);
+            builder.RegisterInstance<IApplicationEnvironment>(PlatformServices.Default.Application);
             builder.RegisterType<MicroServiceLogic>().As<IHostableMicroService>();
             return builder.Build();
         }

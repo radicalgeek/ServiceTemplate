@@ -1,0 +1,70 @@
+<Project DefaultTargets = "Build"
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <!-- Specify the inputs by type and file name -->
+    <ItemGroup>
+        <CSFile Include = "Program.cs"/>
+        <CSFile Include = "DependancyContainer.cs"/>
+        <CSFile Include = "IHostableMicroService.cs"/>
+        <CSFile Include = "MicroServiceLogic.cs"/>
+    </ItemGroup>
+    
+     <ItemGroup>
+        <Reference Include="Microsoft.CSharp" >
+            <HintPath>/Users/mark/.dnx/packages/Microsoft.CSharp/4.0.1-beta-23516/lib/netcore50/Microsoft.CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Collections" >
+            <HintPath>/Users/mark/.dnx/packages/System.Collections/4.0.11-beta-23516/lib/DNXCore50/System.Collections.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Console" >
+            <HintPath>/Users/mark/.dnx/packages/System.Console/4.0.0-beta-23516/lib/net46/System.Console.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Linq" >
+            <HintPath>~/.dnx/packages/System.Linq/4.0.1-beta-23516/lib/netcore50/System.Linq.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Threading" >
+            <HintPath>~/.dnx/packages/System.Threading/4.0.11-beta-23516/lib/netcore50/System.Threading.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.PlatformAbstractions">
+            <HintPath>~/.dnx/packages/Microsoft.Extensions.PlatformAbstractions/1.0.0-rc1-final/lib/netcore50/Microsoft.Extensions.PlatformAbstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Framework.DependencyInjection.Abstractions" >
+            <HintPath>~/.dnx/packages/Microsoft.Framework.DependencyInjection.Abstractions/1.0.0-beta8/lib/netcore50/Microsoft.Framework.DependencyInjection.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Autofac" >
+            <HintPath>~/.dnx/packages/Autofac/4.0.0-rc1-117/lib/dnxcore50/Autofac.dll</HintPath>
+        </Reference>
+        <Reference Include="Autofac.DNX" >
+            <HintPath>~/.dnx/packages/Autofac.DNX/4.0.0-alpha2/lib/dnxcore50/Autofac.DNX.dll</HintPath>
+        </Reference>
+        <Reference Include="EntityFramework.Commands" >
+            <HintPath>~/.dnx/packages/EntityFramework.Commands/7.0.0-rc1-final/lib/netcore50/EntityFramework.Commands.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Extensions.Logging" >
+            <HintPath>~/.dnx/packages/Microsoft.Extensions.Logging/1.0.0-rc1-final/lib/netcore50/Microsoft.Extensions.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="Serilog" >
+            <HintPath>~/.dnx/packages/Serilog/1.5.14/lib/netcore50/Serilog.dll</HintPath>
+        </Reference>
+        <Reference Include="Serilog.Extensions.Logging" >
+            <HintPath>~/.dnx/packages/Serilog.Extensions.Logging/1.0.0-rc1-final-10092/lib/netcore50/MSerilog.Extensions.Logging.dll</HintPath>
+        </Reference>
+        <Reference Include="System.ServiceProcess.ServiceController" >
+            <HintPath>~/.dnx/packages/System.ServiceProcess.ServiceController/4.0.0-beta-23123/lib/netcore50/System.ServiceProcess.ServiceController.dll</HintPath>
+        </Reference>
+        
+  </ItemGroup>
+
+    <Target Name = "Build">
+        <!-- Run the Visual C# compilation using input files of type CSFile -->
+        <CSC  Sources = "@(CSFile)"
+            DebugType="full"
+            Optimize="no"
+            OutputAssembly="Service.Host.exe" >
+
+            <!-- Set the OutputAssembly attribute of the CSC task to the name of the executable file that is created -->
+            <Output TaskParameter="OutputAssembly"
+                ItemName = "EXEFile" />
+        </CSC>
+    </Target>
+</Project>
