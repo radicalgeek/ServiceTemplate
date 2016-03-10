@@ -1,15 +1,16 @@
 {
   "version": "1.0.0-*",
   "description": "Service.Host Console Application",
-  "authors": [ "" ],
-  "tags": [ "" ],
+  "authors": [ "Mark Jones" ],
+  "tags": [ "CoreCLR TemplateService Template Service CoreFX dnxcore dnx dnxcore50 netcore netcore50" ],
   "projectUrl": "",
-  "licenseUrl": "",
+  "licenseUrl": "Mehh",
   "tooling": {
     "defaultNamespace": "Service.Host"
   },
 
   "dependencies": {
+      "Service.Data": "1.0.0-*"
   },
 
   "commands": {
@@ -32,7 +33,9 @@
         "Microsoft.Extensions.Logging": "1.0.0-rc1-final",
         "Serilog": "1.5.14",
         "Serilog.Extensions.Logging": "1.0.0-rc1-final-10092",
-        "System.ServiceProcess.ServiceController": "4.0.0-beta-23123"
+        "System.ServiceProcess.ServiceController": "4.0.0-beta-23123",
+        "EasyNetQDNX": "1.0.0",
+        "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0-rc1-final"
       }
     }
   }

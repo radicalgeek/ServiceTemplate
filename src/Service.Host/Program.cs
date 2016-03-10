@@ -23,13 +23,14 @@ namespace Service.Host
                                 .WriteTo.TextWriter(Console.Out)
                                 .CreateLogger();
                                 
-            var container = DependancyContainer.Configure();
+            var congiguration = Configuration.Build();
+            var container = DependancyContainer.Configure(congiguration);
 
             using (var scope = container.BeginLifetimeScope())
             {
                 Log.Information("Starting Service {ServiceName}", "Template Service");
                 var service = scope.Resolve<IHostableMicroService>();
-                service.Run();
+                service.Start();
             }
         }
     }
