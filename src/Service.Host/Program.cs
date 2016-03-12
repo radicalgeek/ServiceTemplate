@@ -7,7 +7,7 @@ using Microsoft.Framework.DependencyInjection;
 using Autofac;
 using Serilog;
 using System.ServiceProcess;
-//using Service.Logging;
+using Service.Logic;
 
 namespace Service.Host
 {
@@ -28,7 +28,7 @@ namespace Service.Host
 
             using (var scope = container.BeginLifetimeScope())
             {
-                Log.Information("Starting Service {ServiceName}", "Template Service");
+                Log.Information("Starting Service {ServiceName}", scope.Resolve<IApplicationEnvironment>().ApplicationName);
                 var service = scope.Resolve<IHostableMicroService>();
                 service.Start();
             }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.PlatformAbstractions;
 using Service.Host.Factories;
 using Microsoft.Extensions.Configuration;
 using EasyNetQ.Topology;
+using Service.Logic;
 
 namespace Service.Host
 {

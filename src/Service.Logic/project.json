@@ -10,7 +10,8 @@
   },
   
   "dependencies": {
-      "Service.Messaging": ""
+      "Service.Messaging": "1.0.0-*",
+      "Service.Data": "1.0.0-*"
   },
 
   "frameworks": {

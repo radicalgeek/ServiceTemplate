@@ -3,22 +3,26 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
+using Microsoft.Extensions.PlatformAbstractions;
+using Serilog;
+using Service.Data;
+using Service.Data.Relational;
+using Service.Logic.Map;
+using Service.Messaging.Publish;
 
 namespace Service.Logic
 {
-    public class ServiceOperations : IServiceOperations
+    public class ServiceOperations : IDataOperations
     {
-        private readonly IRepository<SampleEntity, string> _sampleEntityRepository = new MongoRepository<SampleEntity, string>();
-        private readonly ILogger _logger;
+        private readonly IDataContextResporitory _dataRepository;
         private readonly IMessagePublisher _publisher;
-        private readonly IEnvironment _environment;
+        private readonly IApplicationEnvironment _env;
 
-        public DataOperations(ILogger logger, IMessagePublisher publisher, IRepository<SampleEntity, string> sampleRepository, IEnvironment environment)
+       public ServiceOperations(IMessagePublisher publisher, IDataContextResporitory dataRepository, IApplicationEnvironment env)
         {
-            _logger = logger;
             _publisher = publisher;
-            _sampleEntityRepository = sampleRepository;
-            _environment = environment;
+            _dataRepository = dataRepository;
+            _env = env;
         }
 
         /// <summary>
@@ -31,16 +35,16 @@ namespace Service.Logic
             {
                 try
                 {
-                    _logger.Info("Event=\"Removing entity\" Entity=\"{0}\"", need.SampleUuid);
+                    Log.Information("Event=\"Removing entity\" Entity=\"{0}\"", need.SampleUuid);
                     string id = need.SampleUuid.ToString();
                     var stopwatch = GetStopwatch();
-                    _sampleEntityRepository.Delete(id);
+                    _dataRepository.Delete(id);
                     stopwatch.Stop();
-                    _logger.Info("Event=\"Deleted entity\" Entity=\"{0}\" ResponseTime=\"{1}\"", need.SampleUuid, stopwatch.Elapsed);
+                    Log.Information("Event=\"Deleted entity\" Entity=\"{0}\" ResponseTime=\"{1}\"", need.SampleUuid, stopwatch.Elapsed);
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Event=\"Faild to remove entity\" Entity=\"{0}\"", need.SampleUuid);
+                    Log.Error(ex, "Event=\"Faild to remove entity\" Entity=\"{0}\"", need.SampleUuid);
                 }
             }
         }
@@ -58,15 +62,15 @@ namespace Service.Logic
                 {
                     string query = need.SampleUuid.ToString();
                     var stopwatch = GetStopwatch();
-                    _logger.Info("Event=\"Retrived Entities\" Entity=\"{0}\" MessageUuid=\"{1}\"", query, message.SampleUuid);
-                    var entity = _sampleEntityRepository.GetById(query);
+                    Log.Information("Event=\"Retrived Entities\" Entity=\"{0}\" MessageUuid=\"{1}\"", query, message.SampleUuid);
+                    var entity = _dataRepository.GetById(query);
                     stopwatch.Stop();
                     entities.Add(entity);
-                    _logger.Info("Event=\"Retrived entity\" Entity=\"{0}\" ResponseTime=\"{1}\"", entity.Id,stopwatch.Elapsed);
+                    Log.Information("Event=\"Retrived entity\" Entity=\"{0}\" ResponseTime=\"{1}\"", entity.Id,stopwatch.Elapsed);
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, "Event=\"Unable to retrived entity\" Entity=\"{0}\"", need.SampleUuid.ToString());
+                    Log.Error(ex, "Event=\"Unable to retrived entity\" Entity=\"{0}\"", need.SampleUuid.ToString());
                 }
                 if (entities.Count > 0)
                 {
@@ -96,15 +100,15 @@ namespace Service.Logic
             try
             {
                 var stopwatch = GetStopwatch();
-                _logger.Info("Event=\"Updating Entities\" MessageUuid=\"{0}\"", message.SampleUuid);
-                _sampleEntityRepository.Update(entity);
-                _logger.Info("Event=\"Updated entity\" Entity=\"{0}\" ResponseTime=\"{1}\"", message.SampleUuid, stopwatch.Elapsed);
+                Log.Information("Event=\"Updating Entities\" MessageUuid=\"{0}\"", message.SampleUuid);
+                _dataRepository.Update(entity);
+                Log.Information("Event=\"Updated entity\" Entity=\"{0}\" ResponseTime=\"{1}\"", message.SampleUuid, stopwatch.Elapsed);
                 //TODO: retrive routing key from config
                 PublishSuccessMessage(message, entity, "A.B");
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Event=\"Unable to update entity\" Entity=\"{0}\"", message.SampleUuid);
+                Log.Error(ex, "Event=\"Unable to update entity\" Entity=\"{0}\"", message.SampleUuid);
                 var errorMessage = String.Format("Event=\"Unable to update entity\" Entity=\"{0}\"",
                         message.SampleUuid.ToString());
 
@@ -123,13 +127,13 @@ namespace Service.Logic
             try
             {
                 var stopwatch = GetStopwatch();
-                _logger.Info("Event=\"Creating Entities\" MessageUuid=\"{0}\"", message.SampleUuid);
-                _sampleEntityRepository.Add(entities);
-                _logger.Info("Event=\"Finished Creating Entities\" MessageUuid=\"{0}\" ResponseTime=\"{1}\"", message.SampleUuid, stopwatch.Elapsed);
+                Log.Information("Event=\"Creating Entities\" MessageUuid=\"{0}\"", message.SampleUuid);
+                _dataRepository.Add(entities);
+                Log.Information("Event=\"Finished Creating Entities\" MessageUuid=\"{0}\" ResponseTime=\"{1}\"", message.SampleUuid, stopwatch.Elapsed);
                 stopwatch.Stop();
                 foreach (SampleEntity entity in entities)
                 {
-                    _logger.Info("Event=\"Created entity\" Entity=\"{0}\"", entity.Id);
+                    Log.Information("Event=\"Created entity\" Entity=\"{0}\"", entity.Id);
 
                 }
                 //TODO: retrive routing key from config
@@ -137,7 +141,7 @@ namespace Service.Logic
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Event=\"Unable to create entity\" Entity=\"{0}\"", message.SampleUuid);
+                Log.Error(ex, "Event=\"Unable to create entity\" Entity=\"{0}\"", message.SampleUuid);
 
                 var errorMessage = String.Format("Event=\"Unable to create entity\" Entity=\"{0}\"",
                         message.SampleUuid.ToString());
@@ -150,7 +154,7 @@ namespace Service.Logic
         public void PublishSuccessMessage(dynamic orignalMessage, List<SampleEntity> entities, string topic)
         {
             orignalMessage.ModifiedTime = DateTime.Now.ToUniversalTime();
-            orignalMessage.ModifiedBy = _environment.GetServiceName();
+            orignalMessage.ModifiedBy = _env.ApplicationName.ToString();
             var solutions = new List<dynamic>();
 
             foreach (var sampleEntity in entities)
@@ -174,11 +178,11 @@ namespace Service.Logic
         public void PublishErrorMessage(dynamic orignalMessage, string errorMessage, string topic)
         {
             orignalMessage.ModifiedTime = DateTime.Now.ToUniversalTime();
-            orignalMessage.ModifiedBy = _environment.GetServiceName();
+            orignalMessage.ModifiedBy = _env.ApplicationName.ToString();
 
             var errors = new List<dynamic>();
             dynamic error = new ExpandoObject();
-            error.Source = _environment.GetServiceName();
+            error.Source = _env.ApplicationName.ToString();
             error.Message = errorMessage;
             errors.Add(error);
 
@@ -196,5 +200,6 @@ namespace Service.Logic
             stopwatch.Start();
             return stopwatch;
         }
+
     }
 }

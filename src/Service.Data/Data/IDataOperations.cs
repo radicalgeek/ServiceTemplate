@@ -1,6 +1,6 @@
-namespace Service.Logic
+namespace Service.Data
 {
-    public interface IServiceOperations
+    public interface IDataOperations
     {
         /// <summary>
         /// Remove a message from the data store based on Id

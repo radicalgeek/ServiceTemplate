@@ -1,13 +1,13 @@
 using System;
 using System.Diagnostics;
-using EasyNetQ;
 using Newtonsoft.Json;
 using Serilog;
 using Service.Messaging.Routing;
 
+
 namespace Service.Messaging.Consume
 {
-    /// <summary>
+     /// <summary>
     /// This is a sample consumer of Test Messages. The autosubscriber automaticly registers any class that impliments
     /// the IConsume interface, using the type parameter to determine the contract to subscribe to. In this implimentation
     /// the contract simply contains a string for JSON data that is later cast to a dynamic object. This means that this one 
@@ -42,7 +42,7 @@ namespace Service.Messaging.Consume
                 Log.Error(ex, "Event=\"Error Consuming Message\" CorrelationId=\"{0}\" ", message.Properties.CorrelationId);
             }
             stopwatch.Stop();
-           Log.Information("Event=\"Finished Consuming Message\" CorrelationId=\"{0}\" TimeElapsed=\"{1}\"", message.Properties.CorrelationId, stopwatch.Elapsed);
+            Log.Information("Event=\"Finished Consuming Message\" CorrelationId=\"{0}\" TimeElapsed=\"{1}\"", message.Properties.CorrelationId, stopwatch.Elapsed);
 
         }
 
@@ -76,5 +76,5 @@ namespace Service.Messaging.Consume
             stopwatch.Start();
             return stopwatch;
         }
-    }
+}
 }

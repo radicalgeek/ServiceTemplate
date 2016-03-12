@@ -3,8 +3,9 @@ using EasyNetQ;
 using EasyNetQ.Topology;
 using Microsoft.Extensions.PlatformAbstractions;
 using Serilog;
+using Service.Messaging.Consume;
 
-namespace Service.Host
+namespace Service.Logic
 {
     public class MicroServiceLogic : IHostableMicroService
     {

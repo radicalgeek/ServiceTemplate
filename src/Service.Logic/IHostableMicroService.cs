@@ -1,4 +1,4 @@
-namespace Service.Host
+namespace Service.Logic
 {
     public interface IHostableMicroService
     {

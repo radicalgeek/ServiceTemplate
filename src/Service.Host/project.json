@@ -10,7 +10,9 @@
   },
 
   "dependencies": {
-      "Service.Data": "1.0.0-*"
+      "Service.Data": "1.0.0-*",
+      "Service.Messaging": "1.0.0-*",
+      "Service.Logic": "1.0.0-*"
   },
 
   "commands": {

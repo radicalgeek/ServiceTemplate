@@ -19,7 +19,8 @@
         "System.Threading": "4.0.11-beta-23516",
         "EasyNetQDNX": "1.0.0",
         "Serilog": "1.5.14",
-        "Serilog.Extensions.Logging": "1.0.0-rc1-final-10092"
+        "Serilog.Extensions.Logging": "1.0.0-rc1-final-10092",
+        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-rc1-final"
       }
     }
   }

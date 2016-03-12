@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.CSharp.RuntimeBinder;
 using Service.Data;
 
-namespace Service.Host.Map
+namespace Service.Logic.Map
 {
     public class EntityMapper
     {

@@ -3,7 +3,7 @@ using Service.Messaging.Filter;
 using Microsoft.Extensions.PlatformAbstractions;
 using Serilog;
 
-namespace Service.Logic
+namespace Service.Messaging.Filter
 {
     public class MessageFilter : IMessageFilter
     {
@@ -32,7 +32,7 @@ namespace Service.Logic
 
         private bool CheckForVersionCompatiblity(dynamic message, string servicename)
         {
-            var currentMajorVersion = _environment.GetServiceVersion();
+            var currentMajorVersion = _app.ApplicationVersion.Split('.')[0];
             try
             {
                 foreach (var versionRequirement in message.CompatibleServiceVersions)
