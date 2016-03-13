@@ -20,7 +20,7 @@ namespace Service.Host
             builder.RegisterInstance<IAdvancedBus>(BusFactory.CreateMessageBus(environmentConfiguration));
             var container =   builder.Build();
             builder.RegisterInstance<IExchange>(ExchangeFactory.CreatExchange(container.Resolve<IAdvancedBus>(),environmentConfiguration));
-            builder.RegisterInstance<IQueue>(QueueFactory.CreatQueue(container.Resolve<IQueue>(),environmentConfiguration));
+            builder.RegisterInstance<IQueue>(QueueFactory.CreatQueue(container.Resolve<IAdvancedBus>(),environmentConfiguration));
             builder.Update(container);
             return container;
         }

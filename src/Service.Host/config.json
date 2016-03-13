@@ -1,0 +1,5 @@
+{
+    "DataAccessPostgreSqlProvider": {
+       "ConnectionString": "User ID=templateUser;Password=1234;Host=localhost;Port=5432;Database=templateDb;Pooling=true;"
+   }
+}

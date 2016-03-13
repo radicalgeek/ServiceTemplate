@@ -1,5 +1,6 @@
 {
     "sources": ["src","test"],
+    "packages": "packages",
     "commands": {
         "run": "Service.Host",
         "ef": "EntityFramework.Commands",

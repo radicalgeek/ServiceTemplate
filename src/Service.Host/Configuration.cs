@@ -1,5 +1,6 @@
 
 using Microsoft.Extensions.Configuration;
+using Service.Data.PostgreSql;
 
 namespace Service.Host
 {
@@ -9,6 +10,9 @@ namespace Service.Host
         {
             var config = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
+                .AddJsonFile("../config.json")
+                .AddNpgsql()
+                .AddDbContext<PostgreDbContext>()
                 .Build();
             return config;
         }
